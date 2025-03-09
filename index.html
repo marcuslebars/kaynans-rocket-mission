@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Kaynan's Rocket Mission</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +17,8 @@
         <canvas id="gameCanvas"></canvas>
         <div class="game-controls">
             <div class="instructions">
-                <p>Press <span class="key">SPACE</span> to thrust the rocket</p>
+                <p class="desktop-only">Press <span class="key">SPACE</span> to thrust the rocket</p>
+                <p class="mobile-only">Tap the screen to thrust the rocket</p>
                 <p>Avoid the wormhole edges!</p>
             </div>
             <button id="startButton">Start Game</button>

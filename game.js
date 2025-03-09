@@ -30,6 +30,7 @@ let highScore = localStorage.getItem('highScore') || 0;
 let frameCount = 0;
 let lastWormholeTime = 0;
 let gameOverlay;
+let isTouching = false; // Track if user is touching the screen
 
 // DOM elements
 const scoreElement = document.getElementById('score');
@@ -40,9 +41,11 @@ const restartButton = document.getElementById('restartButton');
 // Initialize the game
 function init() {
     canvas = document.getElementById('gameCanvas');
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
     ctx = canvas.getContext('2d');
+    
+    // Set canvas size based on device
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
     
     // Create game over overlay
     gameOverlay = document.createElement('div');
@@ -59,11 +62,33 @@ function init() {
     // Event listeners
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
+    
+    // Touch event listeners for mobile
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchstart', handleTouchStartDocument);
+    
     startButton.addEventListener('click', startGame);
     restartButton.addEventListener('click', restartGame);
     
     // Start animation loop
     requestAnimationFrame(gameLoop);
+}
+
+// Resize canvas based on window size
+function resizeCanvas() {
+    const container = document.querySelector('.game-container');
+    const containerWidth = container.clientWidth - 40; // Account for padding
+    
+    if (window.innerWidth <= 768) {
+        // Mobile device
+        canvas.width = containerWidth;
+        canvas.height = containerWidth * (CANVAS_HEIGHT / CANVAS_WIDTH);
+    } else {
+        // Desktop
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+    }
 }
 
 // Create stars for background
@@ -102,6 +127,37 @@ function handleKeyDown(e) {
 function handleKeyUp(e) {
     if (e.code === 'Space') {
         rocket.rotation = 0;
+    }
+}
+
+// Handle touch start on canvas
+function handleTouchStart(e) {
+    e.preventDefault(); // Prevent scrolling when touching the canvas
+    
+    if (gameActive) {
+        rocket.velocity = THRUST;
+        rocket.rotation = -20;
+        isTouching = true;
+    }
+}
+
+// Handle touch end on canvas
+function handleTouchEnd(e) {
+    e.preventDefault();
+    rocket.rotation = 0;
+    isTouching = false;
+}
+
+// Handle touch start on document (for game start/restart)
+function handleTouchStartDocument(e) {
+    // Start game with touch if not active and not game over
+    if (!gameActive && !gameOver) {
+        startGame();
+    }
+    
+    // Restart game with touch when game over
+    if (gameOver) {
+        restartGame();
     }
 }
 
