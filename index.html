@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaynan's Rocket Mission</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score-container">Score: <span id="score">0</span></div>
+            <div class="high-score-container">High Score: <span id="highScore">0</span></div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-controls">
+            <div class="instructions">
+                <p>Press <span class="key">SPACE</span> to thrust the rocket</p>
+                <p>Avoid the wormhole edges!</p>
+            </div>
+            <button id="startButton">Start Game</button>
+            <button id="restartButton" style="display: none;">Play Again</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html> 
